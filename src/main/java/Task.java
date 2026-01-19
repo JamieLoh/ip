@@ -2,6 +2,10 @@ public class Task {
     private String description;
     private boolean isDone;
 
+    public Task() {
+        this.isDone = false;
+    }
+
     public Task(String description){
         this.description = description;
         this.isDone = false;

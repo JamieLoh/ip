@@ -17,10 +17,41 @@ public class Sophon {
     private List<Task> tasksList = new ArrayList<Task>();
 
 
-    public void addTask(String description){
-        Task task = new Task(description);
+    public void addTask(String command){
+        System.out.println("Got it! I have added this task:");
+        if (command.startsWith("todo")) {
+            String description = command.substring(5).trim();
+            addTodo(description);
+        } else if (command.startsWith("deadline")) {
+            int index = command.indexOf('/');
+            String description = command.substring(9, index).trim();
+            String deadline = command.substring(index + 1);
+            addDeadline(description, deadline);
+        } else {
+            int index = command.indexOf('/');
+            String description = command.substring(6, index).trim();
+            String time = command.substring(index + 1).replaceAll("/", "");
+            addEvent(description, time);
+        }
+        System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
+    }
+
+    public void addEvent(String description, String time){
+        Task task = new Event(description, time);
         tasksList.add(task);
-        System.out.println("Added task: " + description + "\n");
+        System.out.println("    " + task.toString());
+    }
+
+    public void addDeadline(String description, String by){
+        Task task = new Deadlines(description, by);
+        tasksList.add(task);
+        System.out.println("    " + task.toString());
+    }
+
+    public void addTodo(String description){
+        Task task = new Todo(description);
+        tasksList.add(task);
+        System.out.println("    " + task.toString());
     }
 
     public void listTasks(){
@@ -72,7 +103,7 @@ public class Sophon {
 
         // interact with user
         Scanner sc = new Scanner(System.in);
-        String userInput = sc.nextLine();
+        String userInput = sc.nextLine().trim();
         while(!userInput.equals("bye")){
             interpretCommand(userInput);
             userInput = sc.nextLine();
