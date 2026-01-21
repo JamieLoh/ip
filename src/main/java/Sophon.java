@@ -23,13 +23,14 @@ public class Sophon {
     private final String TODOS_COMMAND_PATTERN = "^todo .+$";
     private final String MARK_TASK_COMMAND_PATTERN = "^mark \\d+$";
     private final String UNMARK_TASK_COMMAND_PATTERN = "^unmark \\d+$";
+    private final String DELETE_TASK_COMMAND_PATTERN = "^delete \\d+$";
 
     // task list
     private List<Task> tasksList = new ArrayList<Task>();
 
-    public void addEventTask(String command) throws WrongFormatException{
+    public void addEventTask(String command) throws SophonException.WrongFormatException{
         // check format
-        if (!command.matches(EVENT_COMMAND_PATTERN)) throw new WrongFormatException("event [task] /from [start time] /to [end time]");
+        if (!command.matches(EVENT_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time]");
 
         System.out.println(ADD_TASK_MESSAGE);
 
@@ -46,9 +47,9 @@ public class Sophon {
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
-    public void addDeadlineTask(String command) throws WrongFormatException{
+    public void addDeadlineTask(String command) throws SophonException.WrongFormatException{
         // check format
-        if (!command.matches(DEADLINE_COMMAND_PATTERN)) throw new WrongFormatException("deadline [task] / by [deadline]");
+        if (!command.matches(DEADLINE_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("deadline [task] / by [deadline]");
 
         System.out.println(ADD_TASK_MESSAGE);
 
@@ -65,9 +66,9 @@ public class Sophon {
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
-    public void addToDosTask(String command) throws WrongFormatException{
+    public void addToDosTask(String command) throws SophonException.WrongFormatException{
         // check format
-        if (!command.matches(TODOS_COMMAND_PATTERN)) throw new WrongFormatException("todo [task]");
+        if (!command.matches(TODOS_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("todo [task]");
 
         System.out.println(ADD_TASK_MESSAGE);
 
@@ -82,9 +83,9 @@ public class Sophon {
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
-    public void listTasks() throws EmptyListException{
+    public void listTasks() throws SophonException.EmptyListException{
         // check whether the task list is empty
-        if (tasksList.isEmpty()) throw new EmptyListException();
+        if (tasksList.isEmpty()) throw new SophonException.EmptyListException();
 
         int counter = 1;
         System.out.println(LIST_MESSAGE);
@@ -96,13 +97,13 @@ public class Sophon {
     }
 
     // mark task as done
-    public void markTask(String command) throws WrongFormatException, TaskNotFoundException{
+    public void markTask(String command) throws SophonException.WrongFormatException, SophonException.TaskNotFoundException{
         // check format
-        if (!command.matches(MARK_TASK_COMMAND_PATTERN)) throw new WrongFormatException("mark [task number]");
+        if (!command.matches(MARK_TASK_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("mark [task number]");
 
         // check whether task number is valid
         int taskIndex = Integer.parseInt(command.substring(5)) - 1;
-        if (taskIndex < 0 || taskIndex >= tasksList.size()) throw new TaskNotFoundException();
+        if (taskIndex < 0 || taskIndex >= tasksList.size()) throw new SophonException.TaskNotFoundException();
 
         // mark task as done
         System.out.println("Great! I have marked this task as done: ");
@@ -112,19 +113,35 @@ public class Sophon {
     }
 
     // mark task as not done yet
-    public void unmarkTask(String command) throws WrongFormatException, TaskNotFoundException{
+    public void unmarkTask(String command) throws SophonException.WrongFormatException, SophonException.TaskNotFoundException{
         // check format
-        if (!command.matches(UNMARK_TASK_COMMAND_PATTERN)) throw new WrongFormatException("mark [task number]");
+        if (!command.matches(UNMARK_TASK_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("mark [task number]");
 
         // check whether task number is valid
         int taskIndex = Integer.parseInt(command.substring(7)) - 1;
-        if (taskIndex < 0 || taskIndex >= tasksList.size()) throw new TaskNotFoundException();
+        if (taskIndex < 0 || taskIndex >= tasksList.size()) throw new SophonException.TaskNotFoundException();
 
         // mark the task as not done
         System.out.println("Sure! I have marked this task as not done yet: ");
         Task task = tasksList.get(taskIndex);
         task.markAsNotDone();
         System.out.println("    " + task.toString() + "\n");
+    }
+
+    public void deleteTask(String command) throws SophonException.WrongFormatException, SophonException.TaskNotFoundException{
+        // check format
+        if (!command.matches(DELETE_TASK_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("delete [task number]");
+
+        // check whether task number is valid
+        int taskIndex = Integer.parseInt(command.substring(7)) - 1;
+        if (taskIndex < 0 || taskIndex >= tasksList.size()) throw new SophonException.TaskNotFoundException();
+
+        // delete task
+        System.out.println("Understood. I have removed this task from your task list: ");
+        Task task = tasksList.get(taskIndex);
+        System.out.println("    " + task.toString());
+        tasksList.remove(taskIndex);
+        System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
     public void interpretCommand(String command){
@@ -141,10 +158,12 @@ public class Sophon {
                 addDeadlineTask(command);
             } else if (command.startsWith("event")) {
                 addEventTask(command);
+            } else if (command.startsWith("delete")) {
+                deleteTask(command);
             } else {
-                throw new UnkownCommandException();
+                throw new SophonException.UnkownCommandException();
             }
-        } catch (UnkownCommandException | WrongFormatException | TaskNotFoundException | EmptyListException e) {
+        } catch (SophonException.UnkownCommandException | SophonException.WrongFormatException | SophonException.TaskNotFoundException | SophonException.EmptyListException e) {
             System.out.println(e.getMessage() + "\n");
         }
     }
