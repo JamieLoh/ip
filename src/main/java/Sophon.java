@@ -11,51 +11,82 @@ public class Sophon {
                     " |____/ \\___/| .__/|_| |_|\\___/|_| |_|\n" +
                     "             |_|                      \n";
 
+    // messages for print
     private final String GREETING_MESSAGE = "Hello, here is Sophon! How can I help you? \n";
     private final String EXIT_MESSAGE = "Bye bye! Sophon hopes to see you again soon! :) \n";
     private final String LIST_MESSAGE = "Here are the tasks in your list: ";
+    private final String ADD_TASK_MESSAGE = "Got it! I have added this task:";
+
+    // user input command patterns
+    private final String EVENT_COMMAND_PATTERN = "^event .+ /from .+ /to .+$";
+    private final String DEADLINE_COMMAND_PATTERN = "^deadline .+ /by .+$";
+    private final String TODOS_COMMAND_PATTERN = "^todo .+$";
+    private final String MARK_TASK_COMMAND_PATTERN = "^mark \\d+$";
+    private final String UNMARK_TASK_COMMAND_PATTERN = "^unmark \\d+$";
+
+    // task list
     private List<Task> tasksList = new ArrayList<Task>();
 
+    public void addEventTask(String command) throws WrongFormatException{
+        // check format
+        if (!command.matches(EVENT_COMMAND_PATTERN)) throw new WrongFormatException("event [task] /from [start time] /to [end time]");
 
-    public void addTask(String command){
-        System.out.println("Got it! I have added this task:");
-        if (command.startsWith("todo")) {
-            String description = command.substring(5).trim();
-            addTodo(description);
-        } else if (command.startsWith("deadline")) {
-            int index = command.indexOf('/');
-            String description = command.substring(9, index).trim();
-            String deadline = command.substring(index + 1);
-            addDeadline(description, deadline);
-        } else {
-            int index = command.indexOf('/');
-            String description = command.substring(6, index).trim();
-            String time = command.substring(index + 1).replaceAll("/", "");
-            addEvent(description, time);
-        }
+        System.out.println(ADD_TASK_MESSAGE);
+
+        // get task information
+        int index = command.indexOf('/');
+        String description = command.substring(6, index).trim();
+        String time = command.substring(index + 1).replaceAll("/", "");
+
+        // instantiate task and add the task to task list
+        Task task = new Event(description, time);
+        tasksList.add(task);
+
+        System.out.println("    " + task.toString());
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
-    public void addEvent(String description, String time){
-        Task task = new Event(description, time);
+    public void addDeadlineTask(String command) throws WrongFormatException{
+        // check format
+        if (!command.matches(DEADLINE_COMMAND_PATTERN)) throw new WrongFormatException("deadline [task] / by [deadline]");
+
+        System.out.println(ADD_TASK_MESSAGE);
+
+        // get task information
+        int index = command.indexOf('/');
+        String description = command.substring(9, index).trim();
+        String deadline = command.substring(index + 1);
+
+        // instantiate and add the task to task list
+        Task task = new Deadlines(description, deadline);
         tasksList.add(task);
+
         System.out.println("    " + task.toString());
+        System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
-    public void addDeadline(String description, String by){
-        Task task = new Deadlines(description, by);
-        tasksList.add(task);
-        System.out.println("    " + task.toString());
-    }
+    public void addToDosTask(String command) throws WrongFormatException{
+        // check format
+        if (!command.matches(TODOS_COMMAND_PATTERN)) throw new WrongFormatException("todo [task]");
 
-    public void addTodo(String description){
+        System.out.println(ADD_TASK_MESSAGE);
+
+        // get task information
+        String description = command.substring(5).trim();
+
+        // instantiate and add the task to task list
         Task task = new Todo(description);
         tasksList.add(task);
+
         System.out.println("    " + task.toString());
+        System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
-    public void listTasks(){
-        Integer counter = 1;
+    public void listTasks() throws EmptyListException{
+        // check whether the task list is empty
+        if (tasksList.isEmpty()) throw new EmptyListException();
+
+        int counter = 1;
         System.out.println(LIST_MESSAGE);
         for (Task task : tasksList) {
             System.out.println(counter + ". " + task.toString());
@@ -64,40 +95,62 @@ public class Sophon {
         System.out.println("\n");
     }
 
-    public void markTask(String markInformation){
-        System.out.println("Great! I have marked this task as done: ");
+    // mark task as done
+    public void markTask(String command) throws WrongFormatException, TaskNotFoundException{
+        // check format
+        if (!command.matches(MARK_TASK_COMMAND_PATTERN)) throw new WrongFormatException("mark [task number]");
 
-        int taskIndex = Integer.parseInt(markInformation.substring(5)) - 1;
+        // check whether task number is valid
+        int taskIndex = Integer.parseInt(command.substring(5)) - 1;
+        if (taskIndex < 0 || taskIndex >= tasksList.size()) throw new TaskNotFoundException();
+
+        // mark task as done
+        System.out.println("Great! I have marked this task as done: ");
         Task task = tasksList.get(taskIndex);
         task.markAsDone();
-
         System.out.println("    " + task.toString() + "\n");
     }
 
-    public void unmarkTask(String unmarkInformation){
-        System.out.println("Sure! I have marked this task as not done yet: ");
+    // mark task as not done yet
+    public void unmarkTask(String command) throws WrongFormatException, TaskNotFoundException{
+        // check format
+        if (!command.matches(UNMARK_TASK_COMMAND_PATTERN)) throw new WrongFormatException("mark [task number]");
 
-        int taskIndex = Integer.parseInt(unmarkInformation.substring(7)) - 1;
+        // check whether task number is valid
+        int taskIndex = Integer.parseInt(command.substring(7)) - 1;
+        if (taskIndex < 0 || taskIndex >= tasksList.size()) throw new TaskNotFoundException();
+
+        // mark the task as not done
+        System.out.println("Sure! I have marked this task as not done yet: ");
         Task task = tasksList.get(taskIndex);
         task.markAsNotDone();
-
         System.out.println("    " + task.toString() + "\n");
     }
 
     public void interpretCommand(String command){
-        if (command.equals("list")){
-            listTasks();
-        } else if (command.startsWith("mark ")){
-            markTask(command);
-        } else if (command.startsWith("unmark ")){
-            unmarkTask(command);
-        } else {
-            addTask(command);
+        try {
+            if (command.equals("list")){
+                listTasks();
+            } else if (command.startsWith("mark")){
+                markTask(command);
+            } else if (command.startsWith("unmark")){
+                unmarkTask(command);
+            } else if (command.startsWith("todo")) {
+                addToDosTask(command);
+            } else if (command.startsWith("deadline")) {
+                addDeadlineTask(command);
+            } else if (command.startsWith("event")) {
+                addEventTask(command);
+            } else {
+                throw new UnkownCommandException();
+            }
+        } catch (UnkownCommandException | WrongFormatException | TaskNotFoundException | EmptyListException e) {
+            System.out.println(e.getMessage() + "\n");
         }
     }
 
     public void run(){
-        // greeting message
+        // print greeting message
         System.out.println(LOGO);
         System.out.println(GREETING_MESSAGE);
 
@@ -110,12 +163,12 @@ public class Sophon {
         }
         sc.close();
 
-        // exit message
+        // print exit message
         System.out.println(EXIT_MESSAGE);
     }
 
-    public static void main(String[] args) {
-        // run the chatbot Sophon
+    public static void main(String[] args){
+        // instantiate and run Sophon
         new Sophon().run();
     }
 }
