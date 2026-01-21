@@ -23,7 +23,7 @@ public class SophonException extends Exception{
 
     public static class TaskNotFoundException extends SophonException {
         public TaskNotFoundException() {
-            super("There is no such task with your given task number.");
+            super("There is no such task with your given task number. Please give me a valid task number.");
         }
     }
 }
