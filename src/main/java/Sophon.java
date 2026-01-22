@@ -11,7 +11,7 @@ public class Sophon {
                     " |____/ \\___/| .__/|_| |_|\\___/|_| |_|\n" +
                     "             |_|                      \n";
 
-    // messages for print
+    // print messages
     private final String GREETING_MESSAGE = "Hello, here is Sophon! How can I help you? \n";
     private final String EXIT_MESSAGE = "Bye bye! Sophon hopes to see you again soon! :) \n";
     private final String LIST_MESSAGE = "Here are the tasks in your list: ";
@@ -144,26 +144,17 @@ public class Sophon {
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
-    public void interpretCommand(String command){
+    public void interpretCommand(String userInput){
         try {
-            if (command.equals("list")){
-                listTasks();
-            } else if (command.startsWith("mark")){
-                markTask(command);
-            } else if (command.startsWith("unmark")){
-                unmarkTask(command);
-            } else if (command.startsWith("todo")) {
-                addToDosTask(command);
-            } else if (command.startsWith("deadline")) {
-                addDeadlineTask(command);
-            } else if (command.startsWith("event")) {
-                addEventTask(command);
-            } else if (command.startsWith("delete")) {
-                deleteTask(command);
-            } else {
-                throw new SophonException.UnkownCommandException();
+            for (Command command : Command.values()){
+                // find respected command pattern and execute respected command
+                if (command.match(userInput)) {
+                    command.execute(userInput, this);
+                    return;
+                }
             }
-        } catch (SophonException.UnkownCommandException | SophonException.WrongFormatException | SophonException.TaskNotFoundException | SophonException.EmptyListException e) {
+            throw new SophonException.UnkownCommandException();
+        } catch (SophonException e) {
             System.out.println(e.getMessage() + "\n");
         }
     }
