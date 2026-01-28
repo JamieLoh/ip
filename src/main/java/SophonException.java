@@ -9,8 +9,8 @@ public class SophonException extends Exception{
         }
     }
 
-    public static class UnkownCommandException extends SophonException {
-        public UnkownCommandException() {
+    public static class UnknownCommandException extends SophonException {
+        public UnknownCommandException() {
             super("Sorry, I don't know what you mean. Please give me a valid command.");
         }
     }
@@ -24,6 +24,12 @@ public class SophonException extends Exception{
     public static class TaskNotFoundException extends SophonException {
         public TaskNotFoundException() {
             super("There is no such task with your given task number. Please give me a valid task number.");
+        }
+    }
+
+    public static class DataFileCorruptedException extends SophonException {
+        public DataFileCorruptedException() {
+            super("Data file corrupted.");
         }
     }
 }

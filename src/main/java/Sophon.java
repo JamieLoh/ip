@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -27,6 +28,9 @@ public class Sophon {
 
     // task list
     private List<Task> tasksList = new ArrayList<Task>();
+
+    // data file
+    private final String DATA_FILE = "./data/sophon.txt";
 
     public void addEventTask(String command) throws SophonException.WrongFormatException{
         // check format
@@ -144,19 +148,104 @@ public class Sophon {
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
-    public void interpretCommand(String userInput){
-        try {
-            for (Command command : Command.values()){
-                // find respected command pattern and execute respected command
-                if (command.match(userInput)) {
-                    command.execute(userInput, this);
-                    return;
-                }
+    public void addTask(Task task) {
+        tasksList.add(task);
+    }
+
+    public void saveData() throws IOException {
+        FileWriter fw = new FileWriter(DATA_FILE);
+        StringBuilder saveInformation  = new StringBuilder();
+        for (Task task : tasksList) {
+            // get task type
+            String type = "";
+            if (task instanceof Todo) {
+                type = "T";
+            } else if (task instanceof Deadlines) {
+                type = "D";
+            } else {
+                type = "E";
             }
-            throw new SophonException.UnkownCommandException();
-        } catch (SophonException e) {
-            System.out.println(e.getMessage() + "\n");
+
+            // get task status (isDone?)
+            int status = task.isDone() ? 1 : 0;
+
+            // concatenate basic saveInformation: type | status | description
+            saveInformation.append(type).append(" | ").append(status).append(" | ").append(task.getDescription());
+
+            // concatenate additional information like deadline or event time range
+            if (task instanceof Deadlines) {
+                saveInformation.append(" | ").append(
+                        ((Deadlines) task).getDeadline()
+                );
+            } else if (task instanceof Event) {
+                saveInformation.append(" | ").append(
+                        ((Event) task).getTime()
+                );
+            }
+            saveInformation.append("\n");
         }
+        fw.write(saveInformation.toString());
+        fw.close();
+    }
+
+    public void loadData() throws SophonException.DataFileCorruptedException, IOException {
+        File file = new File(DATA_FILE);
+        File parentDir = file.getParentFile();
+
+        if (!parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+        if (!file.exists()) {
+            file.createNewFile();
+            return;
+        }
+
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String input;
+
+        while ((input = br.readLine()) != null) {
+            String[] parts = input.split(" \\| ");
+
+            if (parts.length < 3) {
+                throw new SophonException.DataFileCorruptedException();
+            }
+
+            String type = parts[0];
+            boolean isDone = parts[1].equals("1");
+            String description = parts[2];
+            Task task;
+
+            switch (type) {
+            case "T":
+                task = new Todo(description);
+                break;
+            case "D":
+                task = new Deadlines(description, parts[3]);
+                break;
+            case "E":
+                task = new Event(description, parts[3]);
+                break;
+            default:
+                throw new SophonException.DataFileCorruptedException();
+            }
+
+            if (isDone) {
+                task.markAsDone();
+            }
+            addTask(task);
+        }
+        br.close();
+    }
+
+    public void interpretCommand(String userInput) throws SophonException {
+        for (Command command : Command.values()){
+            // find respected command pattern and execute respected command
+            if (command.match(userInput)) {
+                command.execute(userInput, this);
+                return;
+            }
+        }
+        throw new SophonException.UnknownCommandException();
     }
 
     public void run(){
@@ -164,11 +253,23 @@ public class Sophon {
         System.out.println(LOGO);
         System.out.println(GREETING_MESSAGE);
 
+        // load previous data stored locally first if any
+        try {
+            loadData();
+        } catch (SophonException.DataFileCorruptedException | IOException e) {
+            System.out.println(e.getMessage() + "\n");
+        }
+
         // interact with user
         Scanner sc = new Scanner(System.in);
         String userInput = sc.nextLine().trim();
         while(!userInput.equals("bye")){
-            interpretCommand(userInput);
+            try {
+                interpretCommand(userInput);
+                saveData();
+            } catch (SophonException | IOException e) {
+                System.out.println(e.getMessage() + "\n");
+            }
             userInput = sc.nextLine();
         }
         sc.close();

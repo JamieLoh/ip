@@ -3,6 +3,11 @@
 REM create bin directory if it doesn't exist
 if not exist ..\bin mkdir ..\bin
 
+REM delete test data directory
+if exist data (
+    rmdir /s /q data
+)
+
 REM delete output from previous run
 if exist ACTUAL.TXT del ACTUAL.TXT
 
