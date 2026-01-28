@@ -1,4 +1,6 @@
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -32,40 +34,58 @@ public class Sophon {
     // data file
     private final String DATA_FILE = "./data/sophon.txt";
 
+    public static LocalDateTime convertStringToLocalDateTime(String date) throws SophonException.WrongFormatException {
+        try {
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime localDateTime = LocalDateTime.parse(date, df);
+            return localDateTime;
+        } catch (java.time.format.DateTimeParseException e) {
+            throw new SophonException.WrongFormatException("Invalid time format in your command! Please provide time in this format: yyyy-MM-dd HH:mm:ss");
+        }
+    }
+
     public void addEventTask(String command) throws SophonException.WrongFormatException{
         // check format
-        if (!command.matches(EVENT_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time]");
-
-        System.out.println(ADD_TASK_MESSAGE);
+        if (!command.matches(EVENT_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time] \n" + "Notice: Time should in yyyy-MM--dd HH:mm:ss format");
 
         // get task information
         int index = command.indexOf('/');
         String description = command.substring(6, index).trim();
-        String time = command.substring(index + 1).replaceAll("/", "");
+        String timeRange = command.substring(index + 1);
+        int timeIndex = timeRange.indexOf('/');
+        String startTimeString = timeRange.substring(5, timeIndex).trim();
+        String endTimeString = timeRange.substring(timeIndex + 4).trim();
+
+        // convert startTime and endTime to LocalDateTime format
+        LocalDateTime startTime = convertStringToLocalDateTime(startTimeString);
+        LocalDateTime endTime = convertStringToLocalDateTime(endTimeString);
 
         // instantiate task and add the task to task list
-        Task task = new Event(description, time);
+        Task task = new Event(description, startTime, endTime);
         tasksList.add(task);
 
+        System.out.println(ADD_TASK_MESSAGE);
         System.out.println("    " + task.toString());
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
 
     public void addDeadlineTask(String command) throws SophonException.WrongFormatException{
         // check format
-        if (!command.matches(DEADLINE_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("deadline [task] / by [deadline]");
-
-        System.out.println(ADD_TASK_MESSAGE);
+        if (!command.matches(DEADLINE_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("deadline [task] /by [deadline] \n" + "Notice: Time should in yyyy-MM--dd HH:mm:ss format");
 
         // get task information
         int index = command.indexOf('/');
         String description = command.substring(9, index).trim();
-        String deadline = command.substring(index + 1);
+        String deadlineString = command.substring(index + 4).trim();
+
+        // convert deadline String to LocalDateTime format
+        LocalDateTime deadline = convertStringToLocalDateTime(deadlineString);
 
         // instantiate and add the task to task list
         Task task = new Deadlines(description, deadline);
         tasksList.add(task);
 
+        System.out.println(ADD_TASK_MESSAGE);
         System.out.println("    " + task.toString());
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
@@ -74,8 +94,6 @@ public class Sophon {
         // check format
         if (!command.matches(TODOS_COMMAND_PATTERN)) throw new SophonException.WrongFormatException("todo [task]");
 
-        System.out.println(ADD_TASK_MESSAGE);
-
         // get task information
         String description = command.substring(5).trim();
 
@@ -83,6 +101,7 @@ public class Sophon {
         Task task = new Todo(description);
         tasksList.add(task);
 
+        System.out.println(ADD_TASK_MESSAGE);
         System.out.println("    " + task.toString());
         System.out.println("Now you have " + tasksList.size() + " tasks in your list. \n");
     }
@@ -179,7 +198,9 @@ public class Sophon {
                 );
             } else if (task instanceof Event) {
                 saveInformation.append(" | ").append(
-                        ((Event) task).getTime()
+                        ((Event) task).getStartTime()
+                ).append(" | ").append(
+                        ((Event) task).getEndTime()
                 );
             }
             saveInformation.append("\n");
@@ -201,10 +222,10 @@ public class Sophon {
         }
 
         BufferedReader br = new BufferedReader(new FileReader(file));
-        String input;
+        String content;
 
-        while ((input = br.readLine()) != null) {
-            String[] parts = input.split(" \\| ");
+        while ((content = br.readLine()) != null) {
+            String[] parts = content.split(" \\| ");
 
             if (parts.length < 3) {
                 throw new SophonException.DataFileCorruptedException();
@@ -220,10 +241,10 @@ public class Sophon {
                 task = new Todo(description);
                 break;
             case "D":
-                task = new Deadlines(description, parts[3]);
+                task = new Deadlines(description, LocalDateTime.parse(parts[3]));
                 break;
             case "E":
-                task = new Event(description, parts[3]);
+                task = new Event(description, LocalDateTime.parse(parts[3]),  LocalDateTime.parse(parts[4]));
                 break;
             default:
                 throw new SophonException.DataFileCorruptedException();

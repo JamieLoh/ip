@@ -1,34 +1,40 @@
 list
 todo borrow book
 todo read book
+list
 deadline return book /by Sunday
+list
+deadline return book / by 2030-01-01 00:00:00
+list
+deadline return book /by 2030-01-01 00:00:00
+list
 event project meeting /from Mon 2pm /to 4pm
+event project meeting / from 2030-01-01 12:00:00/ to 2030-01-01 15:00:00
+list
+event project meeting /from 2030-01-01 12:00:00 /to 2030-01-01 15:00:00
 list
 mark 1
 mark 2
 list
-unmark 2
 mark 4
 list
-mark 5
+unmark 2
+list
+mark 2
+list
 unmark 4
-unmark 5
+unmark 2
 list
 balabala
 todo
+todo learn C
 deadline submit project
 deadline submit project /by
-deadline submit project /by Sunday
 list
-event project meeting /from Wed 3pm
+event project meeting /from /to
 list
-event project meeting /from Wed 3pm /to
+delete 1
 list
-event project meeting /from Wed 3pm /to 4pm
-list
-delete 2
-list
-delete 6
-delete 5
+delete 4
 list
 bye
