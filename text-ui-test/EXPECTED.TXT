@@ -17,19 +17,60 @@ Got it! I have added this task:
     [T][ ] read book
 Now you have 2 tasks in your list. 
 
-Got it! I have added this task:
-    [D][ ] return book (by Sunday)
-Now you have 3 tasks in your list. 
+Here are the tasks in your list: 
+1. [T][ ] borrow book
+2. [T][ ] read book
+
+
+Oops, there are some problems with your current command format. Refer to this and try again: 
+Invalid time format in your command! Please provide time in this format: yyyy-MM-dd HH:mm:ss
+
+Here are the tasks in your list: 
+1. [T][ ] borrow book
+2. [T][ ] read book
+
+
+Oops, there are some problems with your current command format. Refer to this and try again: 
+deadline [task] /by [deadline] 
+Notice: Time should in yyyy-MM--dd HH:mm:ss format
+
+Here are the tasks in your list: 
+1. [T][ ] borrow book
+2. [T][ ] read book
+
 
 Got it! I have added this task:
-    [E][ ] project meeting (from Mon 2pm to 4pm)
+    [D][ ] return book (by Jan 1 2030, 00:00:00)
+Now you have 3 tasks in your list. 
+
+Here are the tasks in your list: 
+1. [T][ ] borrow book
+2. [T][ ] read book
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+
+
+Oops, there are some problems with your current command format. Refer to this and try again: 
+Invalid time format in your command! Please provide time in this format: yyyy-MM-dd HH:mm:ss
+
+Oops, there are some problems with your current command format. Refer to this and try again: 
+event [task] /from [start time] /to [end time] 
+Notice: Time should in yyyy-MM--dd HH:mm:ss format
+
+Here are the tasks in your list: 
+1. [T][ ] borrow book
+2. [T][ ] read book
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+
+
+Got it! I have added this task:
+    [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
 Now you have 4 tasks in your list. 
 
 Here are the tasks in your list: 
 1. [T][ ] borrow book
 2. [T][ ] read book
-3. [D][ ] return book (by Sunday)
-4. [E][ ] project meeting (from Mon 2pm to 4pm)
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+4. [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
 
 
 Great! I have marked this task as done: 
@@ -41,35 +82,51 @@ Great! I have marked this task as done:
 Here are the tasks in your list: 
 1. [T][X] borrow book
 2. [T][X] read book
-3. [D][ ] return book (by Sunday)
-4. [E][ ] project meeting (from Mon 2pm to 4pm)
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+4. [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
+
+
+Great! I have marked this task as done: 
+    [E][X] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
+
+Here are the tasks in your list: 
+1. [T][X] borrow book
+2. [T][X] read book
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+4. [E][X] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
 
 
 Sure! I have marked this task as not done yet: 
     [T][ ] read book
 
-Great! I have marked this task as done: 
-    [E][X] project meeting (from Mon 2pm to 4pm)
-
 Here are the tasks in your list: 
 1. [T][X] borrow book
 2. [T][ ] read book
-3. [D][ ] return book (by Sunday)
-4. [E][X] project meeting (from Mon 2pm to 4pm)
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+4. [E][X] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
 
 
-There is no such task with your given task number. Please give me a valid task number.
+Great! I have marked this task as done: 
+    [T][X] read book
+
+Here are the tasks in your list: 
+1. [T][X] borrow book
+2. [T][X] read book
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+4. [E][X] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
+
 
 Sure! I have marked this task as not done yet: 
-    [E][ ] project meeting (from Mon 2pm to 4pm)
+    [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
 
-There is no such task with your given task number. Please give me a valid task number.
+Sure! I have marked this task as not done yet: 
+    [T][ ] read book
 
 Here are the tasks in your list: 
 1. [T][X] borrow book
 2. [T][ ] read book
-3. [D][ ] return book (by Sunday)
-4. [E][ ] project meeting (from Mon 2pm to 4pm)
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+4. [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
 
 
 Sorry, I don't know what you mean. Please give me a valid command.
@@ -77,82 +134,57 @@ Sorry, I don't know what you mean. Please give me a valid command.
 Oops, there are some problems with your current command format. Refer to this and try again: 
 todo [task]
 
-Oops, there are some problems with your current command format. Refer to this and try again: 
-deadline [task] / by [deadline]
-
-Oops, there are some problems with your current command format. Refer to this and try again: 
-deadline [task] / by [deadline]
-
 Got it! I have added this task:
-    [D][ ] submit project (by Sunday)
+    [T][ ] learn C
 Now you have 5 tasks in your list. 
 
+Oops, there are some problems with your current command format. Refer to this and try again: 
+deadline [task] /by [deadline] 
+Notice: Time should in yyyy-MM--dd HH:mm:ss format
+
+Oops, there are some problems with your current command format. Refer to this and try again: 
+deadline [task] /by [deadline] 
+Notice: Time should in yyyy-MM--dd HH:mm:ss format
+
 Here are the tasks in your list: 
 1. [T][X] borrow book
 2. [T][ ] read book
-3. [D][ ] return book (by Sunday)
-4. [E][ ] project meeting (from Mon 2pm to 4pm)
-5. [D][ ] submit project (by Sunday)
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+4. [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
+5. [T][ ] learn C
 
 
 Oops, there are some problems with your current command format. Refer to this and try again: 
-event [task] /from [start time] /to [end time]
+event [task] /from [start time] /to [end time] 
+Notice: Time should in yyyy-MM--dd HH:mm:ss format
 
 Here are the tasks in your list: 
 1. [T][X] borrow book
 2. [T][ ] read book
-3. [D][ ] return book (by Sunday)
-4. [E][ ] project meeting (from Mon 2pm to 4pm)
-5. [D][ ] submit project (by Sunday)
-
-
-Oops, there are some problems with your current command format. Refer to this and try again: 
-event [task] /from [start time] /to [end time]
-
-Here are the tasks in your list: 
-1. [T][X] borrow book
-2. [T][ ] read book
-3. [D][ ] return book (by Sunday)
-4. [E][ ] project meeting (from Mon 2pm to 4pm)
-5. [D][ ] submit project (by Sunday)
-
-
-Got it! I have added this task:
-    [E][ ] project meeting (from Wed 3pm to 4pm)
-Now you have 6 tasks in your list. 
-
-Here are the tasks in your list: 
-1. [T][X] borrow book
-2. [T][ ] read book
-3. [D][ ] return book (by Sunday)
-4. [E][ ] project meeting (from Mon 2pm to 4pm)
-5. [D][ ] submit project (by Sunday)
-6. [E][ ] project meeting (from Wed 3pm to 4pm)
+3. [D][ ] return book (by Jan 1 2030, 00:00:00)
+4. [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
+5. [T][ ] learn C
 
 
 Understood. I have removed this task from your task list: 
-    [T][ ] read book
-Now you have 5 tasks in your list. 
-
-Here are the tasks in your list: 
-1. [T][X] borrow book
-2. [D][ ] return book (by Sunday)
-3. [E][ ] project meeting (from Mon 2pm to 4pm)
-4. [D][ ] submit project (by Sunday)
-5. [E][ ] project meeting (from Wed 3pm to 4pm)
-
-
-There is no such task with your given task number. Please give me a valid task number.
-
-Understood. I have removed this task from your task list: 
-    [E][ ] project meeting (from Wed 3pm to 4pm)
+    [T][X] borrow book
 Now you have 4 tasks in your list. 
 
 Here are the tasks in your list: 
-1. [T][X] borrow book
-2. [D][ ] return book (by Sunday)
-3. [E][ ] project meeting (from Mon 2pm to 4pm)
-4. [D][ ] submit project (by Sunday)
+1. [T][ ] read book
+2. [D][ ] return book (by Jan 1 2030, 00:00:00)
+3. [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
+4. [T][ ] learn C
+
+
+Understood. I have removed this task from your task list: 
+    [T][ ] learn C
+Now you have 3 tasks in your list. 
+
+Here are the tasks in your list: 
+1. [T][ ] read book
+2. [D][ ] return book (by Jan 1 2030, 00:00:00)
+3. [E][ ] project meeting (from Jan 1 2030, 12:00:00 to Jan 1 2030, 15:00:00)
 
 
 Bye bye! Sophon hopes to see you again soon! :) 
