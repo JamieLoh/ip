@@ -1,3 +1,12 @@
+package sophon;
+
+import sophon.command.Command;
+import sophon.exception.SophonException;
+import sophon.parser.Parser;
+import sophon.storage.Storage;
+import sophon.task.TaskList;
+import sophon.ui.UI;
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -42,7 +51,7 @@ public class Sophon {
     }
 
     public static void main(String[] args){
-        // instantiate and run Sophon
+        // instantiate and run sophon.Sophon
         new Sophon().run();
     }
 }

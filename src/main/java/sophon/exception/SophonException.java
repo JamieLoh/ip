@@ -1,3 +1,5 @@
+package sophon.exception;
+
 public class SophonException extends Exception{
     public SophonException(String message){
         super(message);

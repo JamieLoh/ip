@@ -1,3 +1,11 @@
+package sophon.command;
+
+import sophon.exception.SophonException;
+import sophon.storage.Storage;
+import sophon.task.Task;
+import sophon.task.TaskList;
+import sophon.ui.UI;
+
 public class UnmarkCommand extends Command {
     private static final String UNMARK_TASK_COMMAND_PATTERN = "^unmark \\d+$";
     private int taskIndex;
