@@ -23,7 +23,8 @@ Here are the tasks in your list:
 
 
 Oops, there are some problems with your current command format. Refer to this and try again: 
-Invalid time format in your command! Please provide time in this format: yyyy-MM-dd HH:mm:ss
+deadline [task] /by [deadline] 
+Notice: Time should in yyyy-MM--dd HH:mm:ss format
 
 Here are the tasks in your list: 
 1. [T][ ] borrow book
@@ -50,7 +51,8 @@ Here are the tasks in your list:
 
 
 Oops, there are some problems with your current command format. Refer to this and try again: 
-Invalid time format in your command! Please provide time in this format: yyyy-MM-dd HH:mm:ss
+event [task] /from [start time] /to [end time] 
+Notice: Time should in yyyy-MM--dd HH:mm:ss format
 
 Oops, there are some problems with your current command format. Refer to this and try again: 
 event [task] /from [start time] /to [end time] 
