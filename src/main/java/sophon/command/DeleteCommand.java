@@ -1,3 +1,11 @@
+package sophon.command;
+
+import sophon.exception.SophonException;
+import sophon.storage.Storage;
+import sophon.task.Task;
+import sophon.task.TaskList;
+import sophon.ui.UI;
+
 public class DeleteCommand extends Command {
     private static final String DELETE_TASK_COMMAND_PATTERN = "^delete \\d+$";
     private int taskIndex;

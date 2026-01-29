@@ -1,3 +1,7 @@
+package sophon.task;
+
+import sophon.exception.SophonException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +13,7 @@ public class TaskList {
         this.tasksList = new ArrayList<>();
     }
 
-    // load list from Storage
+    // load list from sophon.storage.Storage
     public TaskList(List<Task> tasksList) {
         this.tasksList = tasksList;
     }

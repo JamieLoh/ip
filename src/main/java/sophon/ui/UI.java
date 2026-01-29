@@ -1,3 +1,7 @@
+package sophon.ui;
+
+import sophon.task.Task;
+
 import java.util.List;
 
 public class UI {

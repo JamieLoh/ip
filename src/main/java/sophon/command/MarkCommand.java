@@ -1,3 +1,11 @@
+package sophon.command;
+
+import sophon.exception.SophonException;
+import sophon.storage.Storage;
+import sophon.task.Task;
+import sophon.task.TaskList;
+import sophon.ui.UI;
+
 public class MarkCommand extends Command {
     private static final String MARK_TASK_COMMAND_PATTERN = "^mark \\d+$";
     private int taskIndex;
