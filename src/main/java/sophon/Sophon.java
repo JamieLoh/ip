@@ -35,7 +35,7 @@ public class Sophon {
         // interact with user
         Scanner sc = new Scanner(System.in);
         String userInput = sc.nextLine().trim();
-        while(!userInput.equals("bye")){
+        while (!userInput.equals("bye")) {
             try {
                 Command command = parser.parse(userInput);
                 command.execute(taskList, ui, storage);
@@ -50,7 +50,7 @@ public class Sophon {
         ui.showGoodbyeMessage();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // instantiate and run sophon.Sophon
         new Sophon().run();
     }
