@@ -11,12 +11,23 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a command that adds an event task to the task list.
+ * An event task contains a description, a start time, and an end time.
+ */
 public class EventCommand extends Command {
     private static final String EVENT_COMMAND_PATTERN = "^event .+ /from .+ /to .+$";
-    private String description;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private final String description;
+    private final LocalDateTime startTime;
+    private final LocalDateTime endTime;
 
+    /**
+     * Constructs an {@code EventCommand} by parsing user input.
+     *
+     * @param command The full user input string.
+     * @throws SophonException.WrongFormatException If the command format is invalid
+     *                                             or if the date-time format is incorrect.
+     */
     public EventCommand(String command) throws SophonException.WrongFormatException {
         // check format
         if (!command.matches(EVENT_COMMAND_PATTERN)) {
@@ -39,9 +50,15 @@ public class EventCommand extends Command {
         } catch (DateTimeParseException e) {
             throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time] \n" + "Notice: Time should in yyyy-MM--dd HH:mm:ss format");
         }
-
     }
 
+    /**
+     * Adds the event task to the task list and displays a confirmation message.
+     *
+     * @param taskList The task list to add the task to.
+     * @param ui The UI component used to display messages.
+     * @param storage The storage component (not used here).
+     */
     @Override
     public void execute(TaskList taskList, UI ui, Storage storage) {
         // instantiate task and add the task to task list
