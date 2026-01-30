@@ -1,27 +1,51 @@
 package sophon.task;
 
-import sophon.exception.SophonException;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskList {
-    private List<Task> tasksList;
+import sophon.exception.SophonException;
 
-    // initialise empty list
+/**
+ * Represents a list of tasks in the Sophon application.
+ * <p>
+ * This class provides operations to add, retrieve(list), and remove(delete) tasks
+ * while ensuring index validity.
+ */
+public class TaskList {
+    private final List<Task> tasksList;
+
+    /**
+     * Constructs an empty task list.
+     */
     public TaskList() {
         this.tasksList = new ArrayList<>();
     }
 
-    // load list from sophon.storage.Storage
+    /**
+     * Constructs a task list using an existing list of tasks.
+     *
+     * @param tasksList A list of tasks to initialise this task list with.
+     */
     public TaskList(List<Task> tasksList) {
         this.tasksList = tasksList;
     }
 
+    /**
+     * Adds a task to the task list.
+     *
+     * @param task The task to be added.
+     */
     public void add(Task task) {
         tasksList.add(task);
     }
 
+    /**
+     * Returns the task at the specified index.
+     *
+     * @param index The index of the task to retrieve.
+     * @return The task at the specified index.
+     * @throws SophonException.TaskNotFoundException If the index is invalid, for example, out of boundary.
+     */
     public Task get(int index) throws SophonException.TaskNotFoundException {
         if (index < 0 || index >= tasksList.size()) {
             throw new SophonException.TaskNotFoundException();
@@ -29,6 +53,13 @@ public class TaskList {
         return tasksList.get(index);
     }
 
+    /**
+     * Removes and returns the task at the specified index.
+     *
+     * @param index The index of the task to remove.
+     * @return The removed task.
+     * @throws SophonException.TaskNotFoundException If the index is invalid.
+     */
     public Task remove(int index) throws SophonException.TaskNotFoundException {
         if (index < 0 || index >= tasksList.size()) {
             throw new SophonException.TaskNotFoundException();
@@ -38,15 +69,46 @@ public class TaskList {
         return task;
     }
 
+    /**
+     * Returns the number of tasks in the task list.
+     *
+     * @return The number of tasks.
+     */
     public int size() {
         return tasksList.size();
     }
 
+    /**
+     * Returns whether the task list is empty.
+     *
+     * @return {@code true} if the list is empty; {@code false} otherwise.
+     */
     public boolean isEmpty() {
         return tasksList.isEmpty();
     }
 
+    /**
+     * Returns the list of tasks.
+     *
+     * @return A list containing all tasks.
+     */
     public List<Task> getTasksList() {
         return tasksList;
+    }
+
+    /**
+     * Returns the list of the matching tasks.
+     *
+     * @param keyword Keyword used to search task descriptions.
+     * @return A list containing all tasks.
+     */
+    public List<Task> findTasks(String keyword) {
+        List<Task> foundTasks = new ArrayList<>();
+        for (Task task : tasksList) {
+            if (task.getDescription().contains(keyword)) {
+                foundTasks.add(task);
+            }
+        }
+        return foundTasks;
     }
 }

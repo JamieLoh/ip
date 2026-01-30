@@ -8,10 +8,19 @@ import sophon.task.Todo;
 import sophon.ui.UI;
 
 
+/**
+ * Represents a command that adds a todo task to the task list.
+ */
 public class TodoCommand extends Command {
     private static final String TODOS_COMMAND_PATTERN = "^todo .+$";
-    private String description;
+    private final String description;
 
+    /**
+     * Constructs a {@code TodoCommand} by parsing user input.
+     *
+     * @param command The full user input string.
+     * @throws SophonException.WrongFormatException If the command format is invalid.
+     */
     public TodoCommand(String command) throws SophonException.WrongFormatException {
         // check format
         if (!command.matches(TODOS_COMMAND_PATTERN)) {
@@ -22,8 +31,15 @@ public class TodoCommand extends Command {
         description = command.substring(5).trim();
     }
 
+    /**
+     * Adds the todo task to the task list and displays a confirmation message.
+     *
+     * @param taskList The task list to add the task to.
+     * @param ui The UI component used to display messages.
+     * @param storage The storage component (not used here).
+     */
     @Override
-    public void execute (TaskList taskList, UI ui, Storage storage) {
+    public void execute(TaskList taskList, UI ui, Storage storage) {
         // instantiate and add the task to task list
         Task task = new Todo(description);
         taskList.add(task);
