@@ -2,6 +2,7 @@
 /.idea/
 /out/
 /*.iml
+/build/libs/sophon.jar
 
 # Gradle build files
 /.gradle/

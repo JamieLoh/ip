@@ -34,6 +34,7 @@ application {
 
 shadowJar {
     archiveBaseName = "sophon"
+    archiveFileName = 'sophon.jar'
     archiveClassifier = null
 }
 
