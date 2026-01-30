@@ -16,6 +16,8 @@ list
 mark 1
 mark 2
 list
+find book
+list
 mark 4
 list
 unmark 2

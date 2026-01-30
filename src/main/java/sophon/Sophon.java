@@ -1,5 +1,8 @@
 package sophon;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 import sophon.command.Command;
 import sophon.exception.SophonException;
 import sophon.parser.Parser;
@@ -7,8 +10,7 @@ import sophon.storage.Storage;
 import sophon.task.TaskList;
 import sophon.ui.UI;
 
-import java.io.IOException;
-import java.util.Scanner;
+
 
 /**
  * The main entry point of the Sophon task management application.
@@ -17,12 +19,11 @@ import java.util.Scanner;
  * task list management, and persistent storage.
  */
 public class Sophon {
+    private static final String DATA_FILE = "./data/sophon.txt";
     private UI ui;
     private TaskList taskList;
     private Storage storage;
     private Parser parser;
-    private static final String DATA_FILE = "./data/sophon.txt";
-
     /**
      * Runs the Sophon application.
      * <p>

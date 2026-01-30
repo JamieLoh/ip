@@ -1,8 +1,10 @@
 package sophon.ui;
 
+import java.util.List;
+
 import sophon.task.Task;
 
-import java.util.List;
+
 
 /**
  * Handles all user-facing output for the Sophon application.
@@ -102,5 +104,20 @@ public class UI {
      */
     public void showErrorMessage(String errorMessage) {
         System.out.println(errorMessage + "\n");
+    }
+
+    /**
+     * Displays all tasks that match the search keyword.
+     *
+     * @param foundTasks List of matching tasks.
+     */
+    public void showFoundTasks(List<Task> foundTasks) {
+        System.out.println("Here are the matching tasks in your list: ");
+        int counter = 1;
+        for (Task task : foundTasks) {
+            System.out.println(counter + ". " + task.toString());
+            counter++;
+        }
+        System.out.println("\n");
     }
 }

@@ -4,6 +4,7 @@ import sophon.command.Command;
 import sophon.command.DeadlineCommand;
 import sophon.command.DeleteCommand;
 import sophon.command.EventCommand;
+import sophon.command.FindCommand;
 import sophon.command.ListCommand;
 import sophon.command.MarkCommand;
 import sophon.command.TodoCommand;
@@ -40,6 +41,8 @@ public class Parser {
             return new UnmarkCommand(userInput);
         } else if (userInput.startsWith("delete")) {
             return new DeleteCommand(userInput);
+        } else if (userInput.startsWith("find")) {
+            return new FindCommand(userInput);
         } else {
             throw new SophonException.UnknownCommandException();
         }
