@@ -7,16 +7,29 @@ import sophon.storage.Storage;
 import sophon.task.TaskList;
 import sophon.ui.UI;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * The main entry point of the Sophon task management application.
+ * <p>
+ * This class coordinates interactions between the UI, parser, command execution,
+ * task list management, and persistent storage.
+ */
 public class Sophon {
     private UI ui;
     private TaskList taskList;
     private Storage storage;
     private Parser parser;
-    private final String DATA_FILE = "./data/sophon.txt";
+    private static final String DATA_FILE = "./data/sophon.txt";
 
+    /**
+     * Runs the Sophon application.
+     * <p>
+     * This method initializes all components, loads stored tasks (if any),
+     * and enters a loop to continuously read and execute user commands
+     * until the user exits the application.
+     */
     public void run() {
         ui = new UI();
         parser = new Parser();
@@ -50,6 +63,11 @@ public class Sophon {
         ui.showGoodbyeMessage();
     }
 
+    /**
+     * The main method that starts the Sophon application.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         // instantiate and run sophon.Sophon
         new Sophon().run();

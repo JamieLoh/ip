@@ -1,9 +1,30 @@
 package sophon.parser;
 
-import sophon.command.*;
+import sophon.command.Command;
+import sophon.command.DeadlineCommand;
+import sophon.command.DeleteCommand;
+import sophon.command.EventCommand;
+import sophon.command.ListCommand;
+import sophon.command.MarkCommand;
+import sophon.command.TodoCommand;
+import sophon.command.UnmarkCommand;
 import sophon.exception.SophonException;
 
+/**
+ * Parses user input strings and converts them into executable {@link Command}
+ * objects.
+ * <p>
+ * This class is responsible for determining the type of command entered by the
+ * user and instantiating the corresponding {@code Command} subclass.
+ */
 public class Parser {
+    /**
+     * Parses the given user input and returns the corresponding command.
+     *
+     * @param userInput The raw input string entered by the user.
+     * @return A {@link Command} representing the user instruction.
+     * @throws SophonException If the command is unknown or invalid.
+     */
     public Command parse(String userInput) throws SophonException {
         if (userInput.equals("list")) {
             return new ListCommand();

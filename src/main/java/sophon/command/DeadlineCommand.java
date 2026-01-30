@@ -11,11 +11,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a command that adds a deadline task to the task list.
+ */
 public class DeadlineCommand extends Command {
     private static final String DEADLINE_COMMAND_PATTERN = "^deadline .+ /by .+$";
-    private String description;
-    private LocalDateTime deadline;
 
+    private final String description;
+    private final LocalDateTime deadline;
+
+    /**
+     * Constructs a {@code DeadlineCommand} by parsing user input.
+     *
+     * @param command The full user input string.
+     * @throws SophonException.WrongFormatException If the command format is invalid.
+     */
     public DeadlineCommand(String command) throws SophonException.WrongFormatException {
         // check format
         if (!command.matches(DEADLINE_COMMAND_PATTERN)) {
@@ -36,6 +46,13 @@ public class DeadlineCommand extends Command {
         }
     }
 
+    /**
+     * Adds the deadline task to the task list and shows a confirmation message.
+     *
+     * @param taskList The task list to add the task to.
+     * @param ui The UI component used to show messages.
+     * @param storage The storage component (not used here).
+     */
     @Override
     public void execute(TaskList taskList, UI ui, Storage storage) {
         // instantiate and add the task to task list

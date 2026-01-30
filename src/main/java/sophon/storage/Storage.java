@@ -1,20 +1,55 @@
 package sophon.storage;
 
 import sophon.exception.SophonException;
-import sophon.task.*;
+import sophon.task.Deadlines;
+import sophon.task.Event;
+import sophon.task.Task;
+import sophon.task.TaskList;
+import sophon.task.Todo;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles loading and saving of tasks to persistent storage.
+ * <p>
+ * Tasks are stored in a text file at a specified file path.
+ * Each task is saved in a single line using a pipe-separated format:
+ * <pre>
+ * TYPE | STATUS | DESCRIPTION | [TIME INFORMATION]
+ * </pre>
+ * where TYPE indicates the task type and STATUS indicates whether the
+ * task is completed.
+ */
 public class Storage {
-    private String filePath;
+    private final String filePath;
 
+    /**
+     * Constructs a {@code Storage} object that reads from and writes to
+     * the specified file path.
+     *
+     * @param filePath The file path used for task persistence.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the storage file.
+     * <p>
+     * If the file does not exist, it will be created and an empty task
+     * list will be returned.
+     *
+     * @return A list of tasks loaded from storage.
+     * @throws SophonException.DataFileCorruptedException If the file format is invalid(corrupted).
+     * @throws IOException If an I/O error occurs while reading the file.
+     */
     public List<Task> load() throws SophonException.DataFileCorruptedException, IOException {
         List<Task> loadedTasks = new ArrayList<>();
 
@@ -52,7 +87,7 @@ public class Storage {
                 task = new Deadlines(description, LocalDateTime.parse(parts[3]));
                 break;
             case "E":
-                task = new Event(description, LocalDateTime.parse(parts[3]),  LocalDateTime.parse(parts[4]));
+                task = new Event(description, LocalDateTime.parse(parts[3]), LocalDateTime.parse(parts[4]));
                 break;
             default:
                 throw new SophonException.DataFileCorruptedException();
@@ -67,9 +102,17 @@ public class Storage {
         return loadedTasks;
     }
 
+    /**
+     * Saves the given task list to the storage file.
+     * <p>
+     * Existing file contents will be overwritten.
+     *
+     * @param tasksList The task list to be saved.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
     public void save(TaskList tasksList) throws IOException {
         FileWriter fw = new FileWriter(filePath);
-        StringBuilder saveInformation  = new StringBuilder();
+        StringBuilder saveInformation = new StringBuilder();
 
         for (Task task : tasksList.getTasksList()) {
             // get task type
