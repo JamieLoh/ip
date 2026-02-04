@@ -70,7 +70,6 @@ public class Sophon {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-        // instantiate and run sophon.Sophon
         new Sophon().run();
     }
 }
