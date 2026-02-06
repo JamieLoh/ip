@@ -4,7 +4,6 @@ import sophon.exception.SophonException;
 import sophon.storage.Storage;
 import sophon.task.Task;
 import sophon.task.TaskList;
-import sophon.ui.UI;
 
 /**
  * Represents a command that marks a task as done.
@@ -29,17 +28,19 @@ public class MarkCommand extends Command {
     }
 
     /**
-     * Marks the specified task as done and shows a confirmation message.
+     * Marks the specified task as done and returns a confirmation message.
      *
      * @param taskList The task list containing the task.
-     * @param ui The UI component used to display messages.
      * @param storage The storage component (not used here).
      * @throws SophonException.TaskNotFoundException If the task index is invalid.
      */
     @Override
-    public void execute(TaskList taskList, UI ui, Storage storage) throws SophonException.TaskNotFoundException {
+    public String execute(TaskList taskList, Storage storage) throws SophonException.TaskNotFoundException {
         Task task = taskList.get(taskIndex);
         task.markAsDone();
-        ui.showMarkMessage(task);
+
+        String message = "Great! I have marked this task as done:\n"
+                + "    " + task + "\n";
+        return message;
     }
 }

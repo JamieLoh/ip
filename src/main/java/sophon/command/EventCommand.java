@@ -1,15 +1,14 @@
 package sophon.command;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import sophon.exception.SophonException;
 import sophon.storage.Storage;
 import sophon.task.Event;
 import sophon.task.Task;
 import sophon.task.TaskList;
-import sophon.ui.UI;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 /**
  * Represents a command that adds an event task to the task list.
@@ -53,17 +52,20 @@ public class EventCommand extends Command {
     }
 
     /**
-     * Adds the event task to the task list and displays a confirmation message.
+     * Adds the event task to the task list and returns a confirmation message.
      *
      * @param taskList The task list to add the task to.
-     * @param ui The UI component used to display messages.
      * @param storage The storage component (not used here).
      */
     @Override
-    public void execute(TaskList taskList, UI ui, Storage storage) {
+    public String execute(TaskList taskList, Storage storage) {
         // instantiate task and add the task to task list
         Task task = new Event(description, startTime, endTime);
         taskList.add(task);
-        ui.showAddTaskMessage(task, taskList.size());
+
+        String message = "Got it! I have added this task:\n"
+                + "    " + task + "\n"
+                + "Now you have " + taskList.size() + " tasks in your list. \n";
+        return message;
     }
 }

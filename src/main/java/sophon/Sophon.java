@@ -15,7 +15,7 @@ import sophon.ui.UI;
 /**
  * The main entry point of the Sophon task management application.
  * <p>
- * This class coordinates interactions between the UI, parser, command execution,
+ * This class coordinates interactions between the parser, command execution,
  * task list management, and persistent storage.
  */
 public class Sophon {
@@ -24,48 +24,68 @@ public class Sophon {
     private TaskList taskList;
     private Storage storage;
     private Parser parser;
+
     /**
-     * Runs the Sophon application.
-     * <p>
-     * This method initializes all components, loads stored tasks (if any),
-     * and enters a loop to continuously read and execute user commands
-     * until the user exits the application.
+     * Constructor for GUI usage.
+     * Initializes core components once.
      */
-    public void run() {
+    public Sophon() {
         ui = new UI();
         parser = new Parser();
-        taskList = new TaskList();
         storage = new Storage(DATA_FILE);
 
-        ui.showGreetingMessage();
         // load previous data stored locally first if any
         try {
             taskList = new TaskList(storage.load());
         } catch (SophonException.DataFileCorruptedException | IOException e) {
-            ui.showErrorMessage(e.getMessage());
             taskList = new TaskList();
         }
-
-        // interact with user
-        Scanner sc = new Scanner(System.in);
-        String userInput = sc.nextLine().trim();
-        while (!userInput.equals("bye")) {
-            try {
-                Command command = parser.parse(userInput);
-                command.execute(taskList, ui, storage);
-                storage.save(taskList);
-            } catch (SophonException | IOException e) {
-                System.out.println(e.getMessage() + "\n");
-            }
-            userInput = sc.nextLine();
-        }
-        sc.close();
-
-        ui.showGoodbyeMessage();
     }
 
     /**
-     * The main method that starts the Sophon application.
+     * Runs the Sophon application in CLI mode.
+     * <p>
+     * Continuously reads user input until the user exits the application with "bye".
+     */
+    public void run() {
+        ui.showGreetingMessage();
+
+        Scanner sc = new Scanner(System.in);
+        String userInput = sc.nextLine().trim();
+        while (!userInput.equals("bye")) {
+            String response = getResponse(userInput);
+            System.out.println(response);
+        }
+        sc.close();
+
+        System.out.println("Bye bye! Sophon hopes to see you again soon! :) \n");
+    }
+
+    /**
+     * Processes a single user input and returns the response.
+     * <p>
+     * This method is used by the GUI.
+     *
+     * @param input User input command string
+     * @return Response message
+     */
+    public String getResponse(String input) {
+        if (input.equals("bye")) {
+            return "Bye bye! Sophon hopes to see you again soon! :)";
+        }
+
+        try {
+            Command command = parser.parse(input);
+            String result = command.execute(taskList, storage);
+            storage.save(taskList);
+            return result;
+        } catch (SophonException | IOException e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
+     * The main method for CLI execution
      *
      * @param args Command-line arguments (not used).
      */
