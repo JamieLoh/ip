@@ -6,8 +6,6 @@ import sophon.exception.SophonException;
 import sophon.storage.Storage;
 import sophon.task.Task;
 import sophon.task.TaskList;
-import sophon.ui.UI;
-
 
 /**
  * Represents a command that finds tasks containing a given keyword.
@@ -35,12 +33,18 @@ public class FindCommand extends Command {
      * and displaying all matching tasks to the user.
      *
      * @param taskList The task list to be searched.
-     * @param ui The UI used to show matched results.
      * @param storage The storage component (not used in this command).
      */
     @Override
-    public void execute(TaskList taskList, UI ui, Storage storage) {
+    public String execute(TaskList taskList, Storage storage) {
         List<Task> foundTasks = taskList.findTasks(keyword);
-        ui.showFoundTasks(foundTasks);
+
+        StringBuilder sb = new StringBuilder("Here are the matching tasks:\n");
+        int counter = 1;
+        for (Task task : foundTasks) {
+            sb.append(counter).append(". ").append(task).append("\n");
+            counter++;
+        }
+        return sb.toString();
     }
 }

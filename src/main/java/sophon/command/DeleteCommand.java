@@ -4,7 +4,6 @@ import sophon.exception.SophonException;
 import sophon.storage.Storage;
 import sophon.task.Task;
 import sophon.task.TaskList;
-import sophon.ui.UI;
 
 /**
  * Represents a command that deletes a task from the task list.
@@ -27,16 +26,18 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Removes the specified task from the task list and shows a confirmation message.
+     * Removes the specified task from the task list and returns a confirmation message.
      *
      * @param taskList The task list to remove the task from.
-     * @param ui The UI component used to display messages.
      * @param storage The storage component (not used here).
      * @throws SophonException.TaskNotFoundException If the task index is invalid.
      */
     @Override
-    public void execute(TaskList taskList, UI ui, Storage storage) throws SophonException.TaskNotFoundException {
+    public String execute(TaskList taskList, Storage storage) throws SophonException.TaskNotFoundException {
         Task removedTask = taskList.remove(taskIndex);
-        ui.showDeleteMessage(removedTask, taskList.size());
+        String message = "Got it! I have added this task:\n"
+                + "    " + removedTask + "\n"
+                + "Now you have " + taskList.size() + " tasks in your list. \n";
+        return message;
     }
 }
