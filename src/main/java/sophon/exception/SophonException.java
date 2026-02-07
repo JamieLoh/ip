@@ -52,7 +52,8 @@ public class SophonException extends Exception {
          * @param format The correct format of the command.
          */
         public WrongFormatException(String format) {
-            super("Oops, there are some problems with your current command format. Refer to this and try again: \n" + format);
+            super("Oops, there are some problems with your current command format."
+                    + " Refer to this and try again: \n" + format);
         }
     }
 
