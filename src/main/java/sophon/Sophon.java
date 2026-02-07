@@ -75,7 +75,7 @@ public class Sophon {
         }
 
         try {
-            Command command = parser.parse(input);
+            Command command = parser.parseCommand(input);
             String result = command.execute(taskList, storage);
             storage.save(taskList);
             return result;

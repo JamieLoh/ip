@@ -6,7 +6,7 @@ package sophon.task;
  * A task consists of a textual description and a completion status.
  * This class provides common behavior shared by all task types and
  * serves as the superclass for specific task implementations such as
- * {@link Todo}, {@link Deadlines}, and {@link Event}.
+ * {@link Todo}, {@link Deadline}, and {@link Event}.
  */
 public class Task {
     private String description;

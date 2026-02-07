@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 
 import sophon.exception.SophonException;
 import sophon.storage.Storage;
-import sophon.task.Deadlines;
+import sophon.task.Deadline;
 import sophon.task.Task;
 import sophon.task.TaskList;
 
@@ -30,7 +30,8 @@ public class DeadlineCommand extends Command {
     public DeadlineCommand(String command) throws SophonException.WrongFormatException {
         // check format
         if (!command.matches(DEADLINE_COMMAND_PATTERN)) {
-            throw new SophonException.WrongFormatException("deadline [task] /by [deadline] \n" + "Notice: Time should in yyyy-MM--dd HH:mm:ss format");
+            throw new SophonException.WrongFormatException("deadline [task] /by [deadline] \n"
+                    + "Notice: Time should be in yyyy-MM--dd HH:mm:ss format");
         }
 
         // get task information
@@ -43,7 +44,8 @@ public class DeadlineCommand extends Command {
             DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             deadline = LocalDateTime.parse(deadlineString, df);
         } catch (DateTimeParseException e) {
-            throw new SophonException.WrongFormatException("deadline [task] /by [deadline] \n" + "Notice: Time should in yyyy-MM--dd HH:mm:ss format");
+            throw new SophonException.WrongFormatException("deadline [task] /by [deadline] \n"
+                    + "Notice: Time should be in yyyy-MM--dd HH:mm:ss format");
         }
     }
 
@@ -56,7 +58,7 @@ public class DeadlineCommand extends Command {
     @Override
     public String execute(TaskList taskList, Storage storage) {
         // instantiate and add the task to task list
-        Task task = new Deadlines(description, deadline);
+        Task task = new Deadline(description, deadline);
         taskList.add(task);
 
         String message = "Got it! I have added this task:\n"

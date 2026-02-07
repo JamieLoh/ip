@@ -30,7 +30,8 @@ public class EventCommand extends Command {
     public EventCommand(String command) throws SophonException.WrongFormatException {
         // check format
         if (!command.matches(EVENT_COMMAND_PATTERN)) {
-            throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time] \n" + "Notice: Time should in yyyy-MM--dd HH:mm:ss format");
+            throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time] \n"
+                    + "Notice: Time should be in yyyy-MM--dd HH:mm:ss format");
         }
 
         // get task information
@@ -47,7 +48,8 @@ public class EventCommand extends Command {
             startTime = LocalDateTime.parse(startTimeString, df);
             endTime = LocalDateTime.parse(endTimeString, df);
         } catch (DateTimeParseException e) {
-            throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time] \n" + "Notice: Time should in yyyy-MM--dd HH:mm:ss format");
+            throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time] \n"
+                    + "Notice: Time should be in yyyy-MM--dd HH:mm:ss format");
         }
     }
 

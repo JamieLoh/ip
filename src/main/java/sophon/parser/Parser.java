@@ -26,7 +26,7 @@ public class Parser {
      * @return A {@link Command} representing the user instruction.
      * @throws SophonException If the command is unknown or invalid.
      */
-    public Command parse(String userInput) throws SophonException {
+    public Command parseCommand(String userInput) throws SophonException {
         if (userInput.equals("list")) {
             return new ListCommand();
         } else if (userInput.startsWith("todo")) {

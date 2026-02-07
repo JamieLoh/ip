@@ -1,20 +1,22 @@
 package sophon.storage;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import sophon.exception.SophonException;
-import sophon.task.Deadlines;
+import sophon.task.Deadline;
 import sophon.task.Event;
 import sophon.task.Task;
 import sophon.task.TaskList;
 import sophon.task.Todo;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Handles loading and saving of tasks to persistent storage.
@@ -84,7 +86,7 @@ public class Storage {
                 task = new Todo(description);
                 break;
             case "D":
-                task = new Deadlines(description, LocalDateTime.parse(parts[3]));
+                task = new Deadline(description, LocalDateTime.parse(parts[3]));
                 break;
             case "E":
                 task = new Event(description, LocalDateTime.parse(parts[3]), LocalDateTime.parse(parts[4]));
@@ -107,19 +109,19 @@ public class Storage {
      * <p>
      * Existing file contents will be overwritten.
      *
-     * @param tasksList The task list to be saved.
+     * @param taskList The task list to be saved.
      * @throws IOException If an I/O error occurs while writing to the file.
      */
-    public void save(TaskList tasksList) throws IOException {
+    public void save(TaskList taskList) throws IOException {
         FileWriter fw = new FileWriter(filePath);
         StringBuilder saveInformation = new StringBuilder();
 
-        for (Task task : tasksList.getTasksList()) {
+        for (Task task : taskList.getTasksList()) {
             // get task type
             String type = "";
             if (task instanceof Todo) {
                 type = "T";
-            } else if (task instanceof Deadlines) {
+            } else if (task instanceof Deadline) {
                 type = "D";
             } else {
                 type = "E";
@@ -136,9 +138,9 @@ public class Storage {
                     .append(task.getDescription());
 
             // concatenate additional information like deadline or event time range
-            if (task instanceof Deadlines) {
+            if (task instanceof Deadline) {
                 saveInformation.append(" | ")
-                        .append(((Deadlines) task).getDeadline());
+                        .append(((Deadline) task).getDeadline());
             } else if (task instanceof Event) {
                 saveInformation.append(" | ")
                         .append(((Event) task).getStartTime())

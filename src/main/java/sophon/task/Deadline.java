@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
  * A deadline task stores a single date and time by which the task
  * should be completed.
  */
-public class Deadlines extends Task {
+public class Deadline extends Task {
     private final LocalDateTime deadline;
 
     /**
@@ -18,7 +18,7 @@ public class Deadlines extends Task {
      * @param description A short description of the task.
      * @param deadline    The deadline by which the task should be completed.
      */
-    public Deadlines(String description, LocalDateTime deadline) {
+    public Deadline(String description, LocalDateTime deadline) {
         super(description);
         this.deadline = deadline;
     }
