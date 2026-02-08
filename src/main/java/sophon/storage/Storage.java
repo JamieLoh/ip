@@ -45,8 +45,7 @@ public class Storage {
     /**
      * Loads tasks from the storage file.
      * <p>
-     * If the file does not exist, it will be created and an empty task
-     * list will be returned.
+     * If the file does not exist, it will be created and an empty task list will be returned.
      *
      * @return A list of tasks loaded from storage.
      * @throws SophonException.DataFileCorruptedException If the file format is invalid(corrupted).
@@ -54,11 +53,9 @@ public class Storage {
      */
     public List<Task> load() throws SophonException.DataFileCorruptedException, IOException {
         List<Task> loadedTasks = new ArrayList<>();
-
         File file = new File(filePath);
         File parentDir = file.getParentFile();
-
-        if (!parentDir.exists()) {
+        if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
         }
         if (!file.exists()) {
@@ -67,41 +64,72 @@ public class Storage {
         }
 
         BufferedReader br = new BufferedReader(new FileReader(file));
-        String content;
+        String taskLine;
 
-        while ((content = br.readLine()) != null) {
-            String[] parts = content.split(" \\| ");
-
-            if (parts.length < 3) {
-                throw new SophonException.DataFileCorruptedException();
-            }
-
-            String type = parts[0];
-            boolean isDone = parts[1].equals("1");
-            String description = parts[2];
-            Task task;
-
-            switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                task = new Deadline(description, LocalDateTime.parse(parts[3]));
-                break;
-            case "E":
-                task = new Event(description, LocalDateTime.parse(parts[3]), LocalDateTime.parse(parts[4]));
-                break;
-            default:
-                throw new SophonException.DataFileCorruptedException();
-            }
-
-            if (isDone) {
-                task.markAsDone();
-            }
+        while ((taskLine = br.readLine()) != null) {
+            Task task = parseTask(taskLine);
             loadedTasks.add(task);
         }
         br.close();
         return loadedTasks;
+    }
+
+    /**
+     * Parses a single line from the data file into a {@code Task}.
+     *
+     * @param taskLine One line from the storage file contains task content.
+     * @return A reconstructed Task object.
+     * @throws SophonException.DataFileCorruptedException
+     *         If the line format is invalid.
+     */
+    private Task parseTask(String taskLine) throws SophonException.DataFileCorruptedException {
+        String[] parts = taskLine.split(" \\| ");
+
+        if (parts.length < 3) {
+            throw new SophonException.DataFileCorruptedException();
+        }
+
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        Task task = createTaskByType(type, parts, description);
+
+        if (isDone) {
+            task.markAsDone();
+        }
+
+        return task;
+    }
+
+    /**
+     * Creates a specific Task object based on the given type identifier.
+     *
+     * @param type The task type identifier ("T", "D", or "E").
+     * @param parts The split components of the task line.
+     * @param description The task description.
+     * @return The constructed Task object.
+     * @throws SophonException.DataFileCorruptedException
+     *         If the task type is unknown or required fields are missing.
+     */
+    private Task createTaskByType(String type, String[] parts, String description)
+            throws SophonException.DataFileCorruptedException {
+        switch (type) {
+        case "T":
+            return new Todo(description);
+        case "D":
+            if (parts.length < 4) {
+                throw new SophonException.DataFileCorruptedException();
+            }
+            return new Deadline(description, LocalDateTime.parse(parts[3]));
+        case "E":
+            if (parts.length < 5) {
+                throw new SophonException.DataFileCorruptedException();
+            }
+            return new Event(description, LocalDateTime.parse(parts[3]), LocalDateTime.parse(parts[4]));
+        default:
+            throw new SophonException.DataFileCorruptedException();
+        }
     }
 
     /**
@@ -114,42 +142,67 @@ public class Storage {
      */
     public void save(TaskList taskList) throws IOException {
         FileWriter fw = new FileWriter(filePath);
-        StringBuilder saveInformation = new StringBuilder();
-
-        for (Task task : taskList.getTasksList()) {
-            // get task type
-            String type = "";
-            if (task instanceof Todo) {
-                type = "T";
-            } else if (task instanceof Deadline) {
-                type = "D";
-            } else {
-                type = "E";
-            }
-
-            // get task status (isDone?)
-            int status = task.isDone() ? 1 : 0;
-
-            // concatenate basic saveInformation: type | status | description
-            saveInformation.append(type)
-                    .append(" | ")
-                    .append(status)
-                    .append(" | ")
-                    .append(task.getDescription());
-
-            // concatenate additional information like deadline or event time range
-            if (task instanceof Deadline) {
-                saveInformation.append(" | ")
-                        .append(((Deadline) task).getDeadline());
-            } else if (task instanceof Event) {
-                saveInformation.append(" | ")
-                        .append(((Event) task).getStartTime())
-                        .append(" | ")
-                        .append(((Event) task).getEndTime());
-            }
-            saveInformation.append("\n");
-        }
-        fw.write(saveInformation.toString());
+        String content = buildSaveContent(taskList);
+        fw.write(content);
         fw.close();
+    }
+
+    /**
+     * Builds the complete file content string for all tasks.
+     *
+     * @param taskList The task list to be saved.
+     * @return A formatted string representing all tasks.
+     */
+    private String buildSaveContent(TaskList taskList) {
+        StringBuilder fileContentBuilder = new StringBuilder();
+        for (Task task : taskList.getTasksList()) {
+            fileContentBuilder.append(buildTaskContent(task));
+            fileContentBuilder.append("\n");
+        }
+        return fileContentBuilder.toString();
+    }
+
+    /**
+     * Converts a Task object into its file storage representation.
+     *
+     * <p>The format follows:</p>
+     * <pre>
+     * TYPE | STATUS | DESCRIPTION | [TIME INFORMATION]
+     * </pre>
+     *
+     * @param task The task to be converted.
+     * @return A formatted string suitable for file storage.
+     */
+    private String buildTaskContent(Task task) {
+        String type;
+        if (task instanceof Todo) {
+            type = "T";
+        } else if (task instanceof Deadline) {
+            type = "D";
+        } else {
+            type = "E";
+        }
+
+        int status = task.isDone() ? 1 : 0;
+
+        StringBuilder taskContentBuilder = new StringBuilder();
+        // concatenate basic saveInformation: type | status | description
+        taskContentBuilder.append(type)
+                .append(" | ")
+                .append(status)
+                .append(" | ")
+                .append(task.getDescription());
+
+        // concatenate Time Information for deadline and event task
+        if (task instanceof Deadline) {
+            taskContentBuilder.append(" | ")
+                    .append(((Deadline) task).getDeadline());
+        } else if (task instanceof Event) {
+            taskContentBuilder.append(" | ")
+                    .append(((Event) task).getStartTime())
+                    .append(" | ")
+                    .append(((Event) task).getEndTime());
+        }
+        return taskContentBuilder.toString();
     }
 }
