@@ -70,12 +70,12 @@ public class Sophon {
      * @return Response message
      */
     public String getResponse(String input) {
-        if (input.equals("bye")) {
+        if (input.trim().equals("bye")) {
             return "Bye bye! Sophon hopes to see you again soon! :)";
         }
 
         try {
-            Command command = parser.parseCommand(input);
+            Command command = parser.parseCommand(input.trim());
             String result = command.execute(taskList, storage);
             storage.save(taskList);
             return result;
