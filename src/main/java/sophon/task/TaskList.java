@@ -2,6 +2,7 @@ package sophon.task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import sophon.exception.SophonException;
 
@@ -103,12 +104,9 @@ public class TaskList {
      * @return A list containing all tasks.
      */
     public List<Task> findTasks(String keyword) {
-        List<Task> foundTasks = new ArrayList<>();
-        for (Task task : tasksList) {
-            if (task.getDescription().contains(keyword)) {
-                foundTasks.add(task);
-            }
-        }
+        List<Task> foundTasks = tasksList.stream()
+                .filter(t -> t.getDescription().contains(keyword))
+                .collect(Collectors.toList());
         return foundTasks;
     }
 }
