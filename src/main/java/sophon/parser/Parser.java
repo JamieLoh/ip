@@ -5,6 +5,7 @@ import sophon.command.DeadlineCommand;
 import sophon.command.DeleteCommand;
 import sophon.command.EventCommand;
 import sophon.command.FindCommand;
+import sophon.command.HelpCommand;
 import sophon.command.ListCommand;
 import sophon.command.MarkCommand;
 import sophon.command.TodoCommand;
@@ -43,6 +44,12 @@ public class Parser {
             return new DeleteCommand(userInput);
         } else if (userInput.startsWith("find")) {
             return new FindCommand(userInput);
+        } else if (userInput.startsWith("help")) {
+            String[] parts = userInput.split(" ", 2);
+            if (parts.length == 1) {
+                return new HelpCommand(null);
+            }
+            return new HelpCommand(parts[1].trim());
         } else {
             throw new SophonException.UnknownCommandException();
         }
