@@ -24,7 +24,7 @@ public class ListCommand extends Command {
 
         StringBuilder sb = new StringBuilder("Here are the tasks in your list:\n");
         int counter = 1;
-        for (Task task : taskList.getTasksList()) {
+        for (Task task : taskList.getTaskList()) {
             sb.append(counter).append(". ").append(task).append("\n");
             counter++;
         }

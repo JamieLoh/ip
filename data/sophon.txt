@@ -1,2 +1,6 @@
 T | 0 | cs2109s ps2
 T | 0 | cs2103t ip
+T | 0 | cs2101 presentation
+T | 0 | cs2102 tut
+T | 0 | cs2109s tut
+T | 0 | cs2103t tut

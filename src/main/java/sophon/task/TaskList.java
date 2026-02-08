@@ -13,13 +13,13 @@ import sophon.exception.SophonException;
  * while ensuring index validity.
  */
 public class TaskList {
-    private final List<Task> tasksList;
+    private final List<Task> taskList;
 
     /**
      * Constructs an empty task list.
      */
     public TaskList() {
-        this.tasksList = new ArrayList<>();
+        this.taskList = new ArrayList<>();
     }
 
     /**
@@ -28,7 +28,7 @@ public class TaskList {
      * @param tasksList A list of tasks to initialise this task list with.
      */
     public TaskList(List<Task> tasksList) {
-        this.tasksList = tasksList;
+        this.taskList = tasksList;
     }
 
     /**
@@ -37,7 +37,7 @@ public class TaskList {
      * @param task The task to be added.
      */
     public void add(Task task) {
-        tasksList.add(task);
+        taskList.add(task);
     }
 
     /**
@@ -48,10 +48,10 @@ public class TaskList {
      * @throws SophonException.TaskNotFoundException If the index is invalid, for example, out of boundary.
      */
     public Task get(int index) throws SophonException.TaskNotFoundException {
-        if (index < 0 || index >= tasksList.size()) {
+        if (index < 0 || index >= taskList.size()) {
             throw new SophonException.TaskNotFoundException();
         }
-        return tasksList.get(index);
+        return taskList.get(index);
     }
 
     /**
@@ -62,11 +62,11 @@ public class TaskList {
      * @throws SophonException.TaskNotFoundException If the index is invalid.
      */
     public Task remove(int index) throws SophonException.TaskNotFoundException {
-        if (index < 0 || index >= tasksList.size()) {
+        if (index < 0 || index >= taskList.size()) {
             throw new SophonException.TaskNotFoundException();
         }
-        Task task = tasksList.get(index);
-        tasksList.remove(index);
+        Task task = taskList.get(index);
+        taskList.remove(index);
         return task;
     }
 
@@ -76,7 +76,7 @@ public class TaskList {
      * @return The number of tasks.
      */
     public int size() {
-        return tasksList.size();
+        return taskList.size();
     }
 
     /**
@@ -85,7 +85,7 @@ public class TaskList {
      * @return {@code true} if the list is empty; {@code false} otherwise.
      */
     public boolean isEmpty() {
-        return tasksList.isEmpty();
+        return taskList.isEmpty();
     }
 
     /**
@@ -93,8 +93,8 @@ public class TaskList {
      *
      * @return A list containing all tasks.
      */
-    public List<Task> getTasksList() {
-        return tasksList;
+    public List<Task> getTaskList() {
+        return taskList;
     }
 
     /**
@@ -104,7 +104,7 @@ public class TaskList {
      * @return A list containing all tasks.
      */
     public List<Task> findTasks(String keyword) {
-        List<Task> foundTasks = tasksList.stream()
+        List<Task> foundTasks = taskList.stream()
                 .filter(t -> t.getDescription().contains(keyword))
                 .collect(Collectors.toList());
         return foundTasks;

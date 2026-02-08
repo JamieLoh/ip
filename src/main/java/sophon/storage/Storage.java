@@ -155,7 +155,7 @@ public class Storage {
      */
     private String buildSaveContent(TaskList taskList) {
         StringBuilder fileContentBuilder = new StringBuilder();
-        for (Task task : taskList.getTasksList()) {
+        for (Task task : taskList.getTaskList()) {
             fileContentBuilder.append(buildTaskContent(task));
             fileContentBuilder.append("\n");
         }
