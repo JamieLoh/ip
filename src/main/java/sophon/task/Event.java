@@ -24,6 +24,8 @@ public class Event extends Task {
         super(description);
         this.startTime = startTime;
         this.endTime = endTime;
+        assert startTime != null : "StartTime should not be null";
+        assert endTime != null : "EndTime should not be null";
     }
 
     /**
