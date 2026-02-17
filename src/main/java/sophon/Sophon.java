@@ -62,6 +62,16 @@ public class Sophon {
     }
 
     /**
+     * Returns the greeting message for the GUI.
+     *
+     * @return Greeting message string
+     */
+    public String getGreetingMessage() {
+        return "Welcome back! Sophon is here to help you manage your tasks! :) \n"
+                + "Type 'help' to see the list of available commands.";
+    }
+
+    /**
      * Processes a single user input and returns the response.
      * <p>
      * This method is used by the GUI.
@@ -85,7 +95,7 @@ public class Sophon {
     }
 
     /**
-     * Executes the Sophon application in CLI mode.
+     * Execute the Sophon application in CLI mode.
      *
      * @param args Command-line arguments (not used).
      */
