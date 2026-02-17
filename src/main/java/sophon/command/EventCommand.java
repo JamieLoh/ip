@@ -27,7 +27,8 @@ public class EventCommand extends Command {
      * @throws SophonException.WrongFormatException If the command format is invalid
      *                                             or if the date-time format is incorrect.
      */
-    public EventCommand(String command) throws SophonException.WrongFormatException {
+    public EventCommand(String command) throws SophonException.WrongFormatException,
+            SophonException.WrongDateSequenceException {
         // check format
         if (!command.matches(EVENT_COMMAND_PATTERN)) {
             throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time] \n"
@@ -50,6 +51,11 @@ public class EventCommand extends Command {
         } catch (DateTimeParseException e) {
             throw new SophonException.WrongFormatException("event [task] /from [start time] /to [end time] \n"
                     + "Notice: Time should be in yyyy-MM--dd HH:mm:ss format");
+        }
+
+        // check if end time is before start time
+        if (endTime.isBefore(startTime)) {
+            throw new SophonException.WrongDateSequenceException();
         }
     }
 
