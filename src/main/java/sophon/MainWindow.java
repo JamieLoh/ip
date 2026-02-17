@@ -31,7 +31,7 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Duke instance  */
+    /** Injects the Duke instance and shows the greeting message  */
     public void setSophon(Sophon sophon) {
         this.sophon = sophon;
 
@@ -58,7 +58,7 @@ public class MainWindow extends AnchorPane {
         if (input.equals("bye")) {
             new Thread(() -> {
                 try {
-                    Thread.sleep(2500); // Wait for 2.5 second before exiting
+                    Thread.sleep(2000); // Wait for 2 second before exiting
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }

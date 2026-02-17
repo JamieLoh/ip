@@ -1,4 +1,3 @@
-T | 0 | cs2103t ip
-T | 1 | cs2102 tut
-T | 0 | cs2109s tut
 T | 0 | cs2103t tut
+E | 0 | tp group meeting | 2026-02-19T21:30 | 2026-02-19T22:30
+D | 0 | cs2103t ip | 2026-02-20T16:00

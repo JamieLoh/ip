@@ -81,4 +81,16 @@ public class SophonException extends Exception {
             super("Data file corrupted.");
         }
     }
+
+    /**
+     * Thrown when the end time of a task is before its start time.
+     */
+    public static class WrongDateSequenceException extends SophonException {
+        /**
+         * Constructs a {@code WrongDateSequenceException} with a predefined error message.
+         */
+        public WrongDateSequenceException() {
+            super("Oops, the end time cannot be before the start time. Please check your input and try again.");
+        }
+    }
 }
