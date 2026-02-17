@@ -1,12 +1,17 @@
 .label {
-    -fx-background-color: linear-gradient(to bottom right, #00ffbf, #00ddff);
-    -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
+    -fx-background-color: linear-gradient(to bottom left, #78ff44, #95ec69);
+    -fx-text-fill: #1a1a1a;
+    -fx-font: "Arial";
+    -fx-border-color: rgba(0,0,0,0.1);
     -fx-border-width: 2px;
     -fx-background-radius: 1em 1em 0 1em;
     -fx-border-radius: 1em 1em 0 1em;
 }
 
 .reply-label {
+    -fx-background-color: linear-gradient(to bottom right, #1ba3ff, #0077e6);
+    -fx-text-fill: white;
+    -fx-font: "Arial";
     -fx-background-radius: 1em 1em 1em 0;
     -fx-border-radius: 1em 1em 1em 0;
 }
@@ -22,5 +27,3 @@
     /* Rotate image clockwise by degrees. */
     -fx-rotate: 0;
 }
-
-
