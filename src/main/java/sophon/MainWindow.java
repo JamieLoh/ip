@@ -24,16 +24,20 @@ public class MainWindow extends AnchorPane {
     private Sophon sophon;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
-    private Image sophonImage = new Image(this.getClass().getResourceAsStream("/images/Sophon.jpg"));
+    private Image sophonImage = new Image(this.getClass().getResourceAsStream("/images/Sophon.png"));
 
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Duke instance */
+    /** Injects the Duke instance  */
     public void setSophon(Sophon sophon) {
         this.sophon = sophon;
+
+        dialogContainer.getChildren().add(
+                DialogBox.getSophonDialog(sophon.getGreetingMessage(), sophonImage)
+        );
     }
 
     /**
@@ -49,5 +53,18 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getSophonDialog(response, sophonImage)
         );
         userInput.clear();
+
+        // Exit the application if the user inputs "bye"
+        if (input.equals("bye")) {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(2500); // Wait for 2.5 second before exiting
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                javafx.application.Platform.exit();
+            }).start();
+
+        }
     }
 }

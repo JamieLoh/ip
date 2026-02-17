@@ -27,7 +27,7 @@ public class Main extends Application {
             stage.setMinHeight(220);
             stage.setMinWidth(417);
             stage.setTitle("Sophon");
-            stage.getIcons().add(new Image("/Images/Sophon.jpg"));
+            stage.getIcons().add(new Image("/Images/Sophon.png"));
 
             // inject the Sophon instance
             fxmlLoader.<MainWindow>getController().setSophon(sophon);
