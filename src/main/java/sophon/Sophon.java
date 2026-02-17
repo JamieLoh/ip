@@ -85,7 +85,7 @@ public class Sophon {
     }
 
     /**
-     * The main method for CLI execution
+     * Executes the Sophon application in CLI mode.
      *
      * @param args Command-line arguments (not used).
      */
