@@ -1,4 +1,4 @@
-# Duke User Guide
+# Sophon User Guide
 
 ![Sophon Chatbot Screenshot](Ui.png)
 
