@@ -35,7 +35,7 @@ public class DeleteCommand extends Command {
     @Override
     public String execute(TaskList taskList, Storage storage) throws SophonException.TaskNotFoundException {
         Task removedTask = taskList.remove(taskIndex);
-        String message = "Got it! I have added this task:\n"
+        String message = "Got it! I have deleted this task:\n"
                 + "    " + removedTask + "\n"
                 + "Now you have " + taskList.size() + " tasks in your list. \n";
         return message;
