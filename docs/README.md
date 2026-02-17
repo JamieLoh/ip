@@ -31,7 +31,7 @@ Add a task with a specific deadline.
 **Format:** `deadline DESCRIPTION /by DEADLINE`
 
 **Deadline formats supported:**
-- `yyyy-MM-dd HH:mm:ss` (e.g., 2024-12-15 23:59)
+- `yyyy-MM-dd HH:mm:ss` (e.g., 2026-02-17 00:00:00)
 
 **Example:**
 ```
