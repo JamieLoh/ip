@@ -67,7 +67,7 @@ public class Sophon {
      * @return Greeting message string
      */
     public String getGreetingMessage() {
-        return "Welcome back! Sophon is here to help you manage your tasks! :) \n"
+        return "Hello! Sophon is here to help you manage your tasks! :) \n"
                 + "Type 'help' to see the list of available commands.";
     }
 
