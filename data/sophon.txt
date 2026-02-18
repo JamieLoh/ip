@@ -1,3 +1,0 @@
-T | 0 | watch cs2103t briefing
-T | 0 | Watch CS2103T breifing
-E | 0 | Team meeting | 2026-02-19T21:30 | 2026-02-19T22:30

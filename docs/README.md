@@ -233,4 +233,4 @@ Bye bye! Sophon hopes to see you again soon! :)
 
 ### Acknowledgements
 This README.md is adapted from "https://github.com/Duyy0406/ip/blob/master/docs/README.md" with some modifications to fit the context of Sophon. 
-Artificial Intelligence (AI) has been used to assist in this project: generate user and Sophon's avatar, write the JavaDoc comments, CSS files, and assist me refactor the code.
+Artificial Intelligence (AI) has been used to assist in this project: generate user and Sophon's avatar, help to write the JavaDoc comments, CSS files, and assist me refactor the code.
